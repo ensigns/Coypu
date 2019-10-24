@@ -30,3 +30,5 @@ string: http_method
 All interfaces can raise errors, which will be reported to the user. Do not put anything sensitive in error messages.
 
 TODO *it's probably a good idea to semi-formalize context map too (standard fields)*
+
+Consider a pre-plugin which handles context fetching.
