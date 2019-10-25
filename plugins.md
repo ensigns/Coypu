@@ -4,31 +4,14 @@ This document aims to plan and describe the plugin framework for _coypu_.
 
 Coypu will (probably) ship with some basic plugins, enough to run.
 
-There are different types of plugins, some manage input (such as database or http proxy), some manage output (such as yaml, json, or html table), some act as middleware (such as filtering out records that don't match validation), and some manage authorization (such as jwt, external url).
-
 # Plugin Interfaces
 
-The following endpoints are expected to exist for each type:
+Plugins can be called in any order. They should each have a function called "New" which takes in the config object described in the plugin yaml document, and a returns a function which takes in and returns a context map (the plugin itself).
 
-Auth Plugins should have an interface like:
-`success = auth(\*context)`
+## Context Maps
 
-Input Plugins should have an interface like:
-`input_result = input(\*context, query, http_method, body)`
+The context map includes the http *method*, the *query* as a map, the request *body*, request *headers* as an array, *error*, *resStatus*, *resBody*, *resHeaders* for response sending, and *authDenied* as intended for an auth plugin to write to as needed.
 
-Modification Plugins should have an interface like:
-`mod_result = modify(\*context, input_result)`
+At the end of all plugins, a response message with either a 5XX code and body *error* is sent, or a response message with a *resStatus* code, with body *resBody* and headers *resHeaders*.
 
-Output Plugins should have an interface like:
-`success = render(\*context, input_or_mod_result)``
-
-The following types:
-map: context, input_result, mod_result, query
-boolean: success
-string: http_method
-
-All interfaces can raise errors, which will be reported to the user. Do not put anything sensitive in error messages.
-
-TODO *it's probably a good idea to semi-formalize context map too (standard fields)*
-
-Consider a pre-plugin which handles context fetching.
+Of course, plugins can write anything they would like to the context that they output to be used by other plugins in the stack. It's highly recommended to document this.

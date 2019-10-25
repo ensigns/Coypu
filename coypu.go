@@ -15,19 +15,16 @@ func main() {
     //mod, err = plugin.open("config/plugins/filter.so")
     //out, err = plugin.open("config/plugins/json.so")
     //auth, err = plugin.open("config/plugins/json.so")
-    input, err := p.Lookup("Input")
+    pl, err := p.Lookup("New")
     if err != nil {
     	panic(err)
     }
-    var query = map[string]string{}
-    var context = map[string]string{}
-    var body = ""
-    var method = "GET"
-    x, ok := input.(func(map[string]string, map[string]string, string, string) map[string]string)
+    var context = map[string]interface{}{}
+    x, ok := pl.(func(map[string]interface{}) func(map[string]interface{}) map[string]interface{})
     if !ok {
       panic("OH NO")
     }
-    x(context, query, method, body)
+    x(context)(context)
     color.Green("[STARTUP] Starting Server")
 
     color.Green("[STARTUP] Up at")
