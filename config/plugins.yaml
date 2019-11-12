@@ -1,0 +1,5 @@
+plugins:
+  sampleData:
+    path: ./config/plugins/sampleData.so
+    config:
+      dog: woof
