@@ -8,6 +8,7 @@ import "net/http"
 import "log"
 import "fmt"
 import "os"
+import "time"
 
 func getEnv(key, fallback string) string {
     value, exists := os.LookupEnv(key)
@@ -60,14 +61,22 @@ func main() {
     // function to return output from context.
     var http_port = getEnv("port", "8080")
     color.Green("[STARTUP] Up on port " + http_port)
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    var handler = func(w http.ResponseWriter, r *http.Request) {
       if(r.URL.Path == "/err"){
+        w.Header().Set("snail", "SNAIL")
         http.Error(w, "snails are seriously everywhere", http.StatusInternalServerError)
       } else {
         fmt.Fprintf(w, "Hello, %q", r.URL.Path)
       }
 
-    })
-    log.Fatal(http.ListenAndServe(":"+http_port, nil))
+    }
+    var s = &http.Server{
+    	Addr:           ":"+http_port,
+    	Handler:        http.HandlerFunc(handler),
+    	ReadTimeout:    10 * time.Second,
+    	WriteTimeout:   10 * time.Second,
+    	MaxHeaderBytes: 1 << 20,
+    }
+    log.Fatal(s.ListenAndServe())
 
 }
