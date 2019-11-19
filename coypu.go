@@ -4,6 +4,18 @@ import "github.com/fatih/color"
 import "plugin";
 import "gopkg.in/yaml.v2";
 import "io/ioutil";
+import "net/http"
+import "log"
+import "fmt"
+import "os"
+
+func getEnv(key, fallback string) string {
+    value, exists := os.LookupEnv(key)
+    if !exists {
+        value = fallback
+    }
+    return value
+}
 
 func main() {
 
@@ -43,10 +55,19 @@ func main() {
       Plugins[k] = x(v.Config)
     }
     // TODO routes
-
-    color.Green("[STARTUP] Starting Server")
     // function to generate initial context
     // pass to list in this route
     // function to return output from context.
-    color.Green("[STARTUP] Up at")
+    var http_port = getEnv("port", "8080")
+    color.Green("[STARTUP] Up on port " + http_port)
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+      if(r.URL.Path == "/err"){
+        http.Error(w, "snails are seriously everywhere", http.StatusInternalServerError)
+      } else {
+        fmt.Fprintf(w, "Hello, %q", r.URL.Path)
+      }
+
+    })
+    log.Fatal(http.ListenAndServe(":"+http_port, nil))
+
 }
