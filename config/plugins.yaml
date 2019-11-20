@@ -1,5 +1,13 @@
 plugins:
   sampleData:
-    path: ./config/plugins/sampleData.so
+    path: ./config/plugins/sampleData/sampleData.so
+    config:
+      dog: woof
+  htmlRender:
+    path: ./config/plugins/htmlRender/htmlRender.so
+    config:
+      dog: woof
+  jsonRender:
+    path: ./config/plugins/jsonRender/jsonRender.so
     config:
       dog: woof

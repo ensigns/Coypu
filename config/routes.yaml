@@ -1,0 +1,14 @@
+routes:
+  html:
+    config:
+      prefix: "tested-here"
+      renderFrom: "randomFloat"
+    plugins:
+      - sampleData
+      - htmlRender
+  sample/json:
+    config:
+      renderFrom: "random"
+    plugins:
+      - sampleData
+      - jsonRender

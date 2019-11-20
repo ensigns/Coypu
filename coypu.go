@@ -9,6 +9,7 @@ import "log"
 import "fmt"
 import "os"
 import "time"
+import "strings"
 
 func getEnv(key, fallback string) string {
     value, exists := os.LookupEnv(key)
@@ -19,14 +20,18 @@ func getEnv(key, fallback string) string {
 }
 
 func main() {
-
-    color.Green("[STARTUP] Reading Config")
-
-    color.Green("[STARTUP] Fetching Plugins")
+    color.Green("[STARTUP] Setting Up Plugins")
     type PluginConf struct {
         Plugins map[string] struct{
             Path string
             Config map[string]interface{}
+          }
+    }
+    type RouteConf struct {
+        Routes map[string] struct{
+            Path string
+            Config map[string]interface{}
+            Plugins map[string]interface{}
           }
     }
     var plugin_conf PluginConf
@@ -55,14 +60,25 @@ func main() {
       }
       Plugins[k] = x(v.Config)
     }
-    // TODO routes
+    color.Green("[STARTUP] Setting Up Routes")
+    var route_conf RouteConf
+    routeConfRaw, err := ioutil.ReadFile("./config/routes.yaml")
+    if err != nil {
+        panic(err)
+    }
+    err = yaml.Unmarshal(routeConfRaw, &route_conf)
+    if err != nil {
+        panic(err)
+    }
+    // TODO routes, using route_conf variable
+    // check if the url prefix matches
     // function to generate initial context
     // pass to list in this route
     // function to return output from context.
     var http_port = getEnv("port", "8080")
     color.Green("[STARTUP] Up on port " + http_port)
     var handler = func(w http.ResponseWriter, r *http.Request) {
-      if(r.URL.Path == "/err"){
+      if(strings.HasPrefix(r.URL.Path, "/err")){
         w.Header().Set("snail", "SNAIL")
         http.Error(w, "snails are seriously everywhere", http.StatusInternalServerError)
       } else {
