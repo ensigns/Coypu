@@ -31,7 +31,7 @@ func main() {
         Routes map[string] struct{
             Path string
             Config map[string]interface{}
-            Plugins map[string]interface{}
+            Plugins []string
           }
     }
     var plugin_conf PluginConf
