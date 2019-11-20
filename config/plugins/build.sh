@@ -1,4 +1,1 @@
-for f in *.go; do
-  echo $f
-  go build -buildmode=plugin -o "${f%.go}.so"
-done
+find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c "cd '{}' &&   go build -buildmode=plugin" \;
