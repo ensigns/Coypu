@@ -84,7 +84,6 @@ func getRoutes() RouteConf{
 func main() {
     color.Green("[STARTUP] Setting Up Plugins")
     var Plugins = getPlugins()
-    _ = Plugins // REMOVE
     color.Green("[STARTUP] Setting Up Routes")
     var Routes = getRoutes().Routes
     var http_port = getEnv("port", "8080")
@@ -95,11 +94,13 @@ func main() {
         var subdir = strings.ToLower(pathArray[1])
         if route, ok := Routes[subdir]; ok {
           var pls = route.Plugins
+          // inital context is route config
+          var ctx = route.Config
           for _, pl := range pls {
-            fmt.Println(pl)
+            // run the plugin, updating context
+            ctx = Plugins[pl](ctx)
           }
-          // assemble context
-          // run the things in the route in order
+          fmt.Fprintf(w, ctx["resBody"].(string))
           // return output from context
           // ERROR HANDLER
         } else {
