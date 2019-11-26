@@ -6,7 +6,7 @@ routes:
     plugins:
       - sampleData
       - htmlRender
-  sample/json:
+  json:
     config:
       renderFrom: "random"
     plugins:

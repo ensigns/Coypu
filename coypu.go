@@ -1,15 +1,17 @@
 package main
 
-import "github.com/fatih/color"
-import "plugin";
-import "gopkg.in/yaml.v2";
-import "io/ioutil";
-import "net/http"
-import "log"
-import "fmt"
-import "os"
-import "time"
-import "strings"
+import (
+  "github.com/fatih/color"
+   "plugin"
+   "gopkg.in/yaml.v2"
+   "io/ioutil"
+   "net/http"
+   "log"
+   "fmt"
+   "os"
+   "time"
+   "strings"
+)
 
 type PluginConf struct {
     Plugins map[string] struct{
@@ -17,12 +19,14 @@ type PluginConf struct {
         Config map[string]interface{}
       }
 }
+
+type SingleRoute struct{
+    Config map[string]interface{}
+    Plugins []string
+  }
+
 type RouteConf struct {
-    Routes map[string] struct{
-        Path string
-        Config map[string]interface{}
-        Plugins []string
-      }
+    Routes map[string] SingleRoute
 }
 
 func getEnv(key, fallback string) string {
@@ -63,7 +67,7 @@ func getPlugins() map[string]func(map[string]interface{})map[string]interface{} 
   return Plugins
 }
 
-func getRoutes()  map[string]func(map[string]interface{})map[string]interface{}{
+func getRoutes() RouteConf{
   var route_conf RouteConf
   routeConfRaw, err := ioutil.ReadFile("./config/routes.yaml")
   if err != nil {
@@ -73,29 +77,41 @@ func getRoutes()  map[string]func(map[string]interface{})map[string]interface{}{
   if err != nil {
       panic(err)
   }
-  Routes := make(map[string]func(map[string]interface{})map[string]interface{},0)
-  return Routes
+  //Routes := make(map[string]interface{})
+  return route_conf
 }
 
 func main() {
     color.Green("[STARTUP] Setting Up Plugins")
     var Plugins = getPlugins()
+    _ = Plugins // REMOVE
     color.Green("[STARTUP] Setting Up Routes")
-    var Routes = getRoutes()
-    // TODO routes, using route_conf variable
-    // check if the url prefix matches
-    // function to generate initial context
-    // pass to list in this route
-    // function to return output from context.
+    var Routes = getRoutes().Routes
     var http_port = getEnv("port", "8080")
     color.Green("[STARTUP] Up on port " + http_port)
     var handler = func(w http.ResponseWriter, r *http.Request) {
-      if(strings.HasPrefix(r.URL.Path, "/err")){
-        w.Header().Set("snail", "SNAIL")
-        http.Error(w, "snails are seriously everywhere", http.StatusInternalServerError)
+      var pathArray = strings.Split(r.URL.Path, "/")
+      if (len(pathArray)>1){
+        var subdir = strings.ToLower(pathArray[1])
+        if route, ok := Routes[subdir]; ok {
+          var pls = route.Plugins
+          for _, pl := range pls {
+            fmt.Println(pl)
+          }
+          // assemble context
+          // run the things in the route in order
+          // return output from context
+          // ERROR HANDLER
+        } else {
+          // default handler, echo for now
+          fmt.Fprintf(w, "Tried to use and could not find route named %q", subdir)
+        }
       } else {
-        fmt.Fprintf(w, "Hello, %q", r.URL.Path)
+        fmt.Fprintf(w, "No subdir, no route selected")
       }
+
+
+
 
     }
     var s = &http.Server{
