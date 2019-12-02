@@ -107,8 +107,8 @@ func main() {
             w.Header().Set(hdrName, hdrVal)
           }
           // status code write
-          if ctx["resStatus"]{
-            w.WriteHeader(ctx["resStatus"])
+          if resCode, ok := ctx["resStatus"]; ok{
+            w.WriteHeader(resCode.(int))
           }
           fmt.Fprintf(w, ctx["resBody"].(string))
           // return output from context
