@@ -96,18 +96,30 @@ func main() {
           var pls = route.Plugins
           // inital context is route config
           var ctx = route.Config
+          // add empty header item
+          ctx["resHeaders"] = map[string]string{}
           for _, pl := range pls {
             // run the plugin, updating context
             ctx = Plugins[pl](ctx)
+          }
+          // write all list of resHeaders
+          for hdrName, hdrVal := range ctx["resHeaders"].(map[string]string){
+            w.Header().Set(hdrName, hdrVal)
+          }
+          // status code write
+          if ctx["resStatus"]{
+            w.WriteHeader(ctx["resStatus"])
           }
           fmt.Fprintf(w, ctx["resBody"].(string))
           // return output from context
           // ERROR HANDLER
         } else {
           // default handler, echo for now
+          w.WriteHeader(http.StatusInternalServerError)
           fmt.Fprintf(w, "Tried to use and could not find route named %q", subdir)
         }
       } else {
+        w.WriteHeader(http.StatusInternalServerError)
         fmt.Fprintf(w, "No subdir, no route selected")
       }
 
