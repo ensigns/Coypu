@@ -100,6 +100,11 @@ func main() {
           ctx["resHeaders"] = map[string]string{}
           for _, pl := range pls {
             // run the plugin, updating context
+            defer func() {
+              if err := recover(); err != nil {
+                  log.Println("plugin execution error:", err)
+              }
+            }()
             ctx = Plugins[pl](ctx)
           }
           // write all list of resHeaders

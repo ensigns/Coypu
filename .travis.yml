@@ -1,0 +1,13 @@
+language: go
+
+go:
+- 1.x
+
+before_install:
+  - ./get_deps.sh
+
+install:
+  - cd config/plugins/ && ./build.sh
+
+script:
+  - go build
