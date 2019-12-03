@@ -11,3 +11,11 @@ plugins:
     path: ./config/plugins/jsonRender/jsonRender.so
     config:
       dog: woof
+  rawRender:
+    path: ./config/plugins/rawRender/rawRender.so
+    config:
+      dog: woof
+  httpSource:
+    path: ./config/plugins/httpSource/httpSource.so
+    config:
+      urlFieldName: httpUrl

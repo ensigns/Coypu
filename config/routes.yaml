@@ -12,3 +12,10 @@ routes:
     plugins:
       - sampleData
       - jsonRender
+  todo:
+    config:
+      renderFrom: "httpRes"
+      httpUrl: "http://jsonplaceholder.typicode.com/todos/"
+    plugins:
+      - httpSource
+      - rawRender
