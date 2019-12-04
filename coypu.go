@@ -98,6 +98,8 @@ func main() {
           var ctx = route.Config
           // add empty header item for response headers
           ctx["resHeaders"] = map[string]string{}
+          // empty error
+          ctx["error"] = nil
           // add method, string
           ctx["method"] = r.Method
           // add body, string
