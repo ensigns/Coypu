@@ -96,8 +96,21 @@ func main() {
           var pls = route.Plugins
           // inital context is route config
           var ctx = route.Config
-          // add empty header item
+          // add empty header item for response headers
           ctx["resHeaders"] = map[string]string{}
+          // add method, string
+          ctx["method"] = r.Method
+          // add body, string
+          body, err := ioutil.ReadAll(r.Body)
+          if err != nil {
+            log.Println("body extraction error:", err)
+            body = make([]byte, 0, 0)
+          }
+          ctx["body"] = string(body)
+          // add query, map
+          ctx["query"] = r.URL.Query()
+          // add headers, map
+          ctx["headers"] = r.Header
           for _, pl := range pls {
             // run the plugin, updating context
             defer func() {

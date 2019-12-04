@@ -13,11 +13,13 @@ func New(config map[string]interface{}) func(context map[string]interface{}) map
     if err != nil {
       context["httpStatus"] = 500
       context["httpRes"] = string(err.Error())
+      context["error"] = string(err.Error())
     } else {
       body, err := ioutil.ReadAll(resp.Body)
       if err != nil {
         context["httpStatus"] = 500
         context["httpRes"] = string(err.Error())
+        context["error"] = string(err.Error())
       }
       context["httpStatus"] = 200
       context["httpRes"] = string(body)

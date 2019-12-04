@@ -12,7 +12,7 @@ Plugins can be called in any order. They should each have a function called "New
 
 ## Context Maps
 
-The context map includes the http *method*, the *query* as a map, the request *body*, request *headers* as an array, *error*, *resStatus*, *resBody*, *resHeaders* for response sending, and *authDenied* as intended for an auth plugin to write to as needed.
+The context map includes the http *method*, the *query* as a map, the request *body*, request *headers* as a map, *error*, *resStatus*, *resBody*, *resHeaders* for response sending, and *authDenied* as intended for an auth plugin to write to as needed.
 
 At the end of all plugins, a response message with either a 5XX code and body *error* is sent, or a response message with a *resStatus* code, with body *resBody* and headers *resHeaders*.
 
