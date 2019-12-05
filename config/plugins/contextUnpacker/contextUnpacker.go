@@ -6,7 +6,6 @@
 
 package main
 
-import "github.com/fatih/color"
 import "strings"
 
 func New(config map[string]interface{}) func(context map[string]interface{}) map[string]interface{} {

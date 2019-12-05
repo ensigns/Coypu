@@ -8,7 +8,6 @@
 package main
 import "strings"
 
-import "github.com/fatih/color"
 
 func stringInSlice(a string, list []string) bool {
   for _, b := range list {

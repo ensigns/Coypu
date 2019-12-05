@@ -14,7 +14,6 @@
 package main
 
 import (
-   "github.com/fatih/color"
    "go.mongodb.org/mongo-driver/bson"
    "go.mongodb.org/mongo-driver/mongo"
    "go.mongodb.org/mongo-driver/mongo/options"
@@ -23,15 +22,13 @@ import (
 )
 
 func New(config map[string]interface{}) func(coypuContext map[string]interface{}) map[string]interface{} {
-  MongoClient, Err := mongo.NewClient(options.Client().ApplyURI(config["mongoUri"].(string)))
   return func(coypuContext map[string]interface{}) map[string]interface{} {
+    MongoClient, Err := mongo.NewClient(options.Client().ApplyURI(config["mongoUri"].(string)))
     if Err!=nil{
       coypuContext["mongoStatus"] = 500
       coypuContext["mongoRes"] = string(Err.Error())
       coypuContext["error"] = string(Err.Error())
     }
-    color.Red("[PKG] mongoSource")
-    // get content from whatever is set as httpUrl
     mongoCtx, _ := context.WithTimeout(context.Background(), 10*time.Second)
     err := MongoClient.Connect(mongoCtx)
     if err != nil {
@@ -54,8 +51,9 @@ func New(config map[string]interface{}) func(coypuContext map[string]interface{}
         }
       } else {
         // TODO assemble query
-        var results []*map[string]interface{}
+        var results []map[string]interface{}
         cur, err := collection.Find(mongoCtx, bson.D{})
+        _ = cur
         if err != nil{
           coypuContext["mongoStatus"] = 500
           coypuContext["mongoRes"] = string(err.Error())
@@ -63,10 +61,12 @@ func New(config map[string]interface{}) func(coypuContext map[string]interface{}
         } else {
           cur.All(mongoCtx, &results)
           coypuContext["mongoStatus"] = 200
+          // debug, look at results
           coypuContext["mongoRes"] = results
         }
       }
     }
     return coypuContext
+
   }
 }

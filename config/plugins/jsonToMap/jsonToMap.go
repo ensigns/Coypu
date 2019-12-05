@@ -5,12 +5,10 @@
 
 package main
 
-import "github.com/fatih/color"
 import "encoding/json"
 
 func New(config map[string]interface{}) func(context map[string]interface{}) map[string]interface{} {
   return func(context map[string]interface{}) map[string]interface{} {
-    color.Red("[PKG] jsonToMap")
     var convertFrom string = context["m2jFrom"].(string)
     var convertTo string = context["m2jTo"].(string)
     var msgMapTemplate interface{}

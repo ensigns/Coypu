@@ -21,8 +21,12 @@ routes:
       - rawRender
   mongo:
     config:
-      something: else
+      m2jFrom: mongoRes
+      m2jTo: mongoJSON
+      renderFrom: mongoJSON
+      mongoCollection: test
+      mongoDb: test
     plugins:
       - mongoSource
-      - jsonRender
-      - errorHandler
+      - mapToJson
+      - rawRender

@@ -22,7 +22,7 @@ plugins:
   mongoSource:
     path: ./config/plugins/mongoSource/mongoSource.so
     config:
-      mongoUri: "localhost:21027"
+      mongoUri: "mongodb://localhost"
   errorHanlder:
     path: ./config/plugins/errorHandler/errorHandler.so
     config:

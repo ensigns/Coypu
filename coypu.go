@@ -98,6 +98,7 @@ func main() {
           var ctx = route.Config
           // add empty header item for response headers
           ctx["resHeaders"] = map[string]string{}
+          ctx["resStatus"] = 200
           // empty error
           ctx["error"] = nil
           // add method, string
@@ -132,9 +133,7 @@ func main() {
           }
           fmt.Fprintf(w, ctx["resBody"].(string))
           // return output from context
-          // ERROR HANDLER
         } else {
-          // default handler, echo for now
           w.WriteHeader(http.StatusInternalServerError)
           fmt.Fprintf(w, "Tried to use and could not find route named %q", subdir)
         }
