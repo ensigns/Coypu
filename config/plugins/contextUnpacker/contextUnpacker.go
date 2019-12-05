@@ -11,7 +11,6 @@ import "strings"
 
 func New(config map[string]interface{}) func(context map[string]interface{}) map[string]interface{} {
   return func(context map[string]interface{}) map[string]interface{} {
-    color.Red("[PKG] contextRenamer")
     src := context["unpackSource"].(map[string]interface{})
     s := strings.Split(context["unpackFrom"].(string), ",")
     t := strings.Split(context["unpackTo"].(string), ",")

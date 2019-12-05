@@ -19,3 +19,35 @@ plugins:
     path: ./config/plugins/httpSource/httpSource.so
     config:
       urlFieldName: httpUrl
+  mongoSource:
+    path: ./config/plugins/mongoSource/mongoSource.so
+    config:
+      mongoUri: "localhost:21027"
+  errorHanlder:
+    path: ./config/plugins/errorHandler/errorHandler.so
+    config:
+      nothing: here
+  mapToJson:
+    path: ./config/plugins/mapToJson/mapToJson.so
+    config:
+      nothing: here
+  jsonToMap:
+    path: ./config/plugins/jsonToMap/jsonToMap.so
+    config:
+      nothing: here
+  jwtClient:
+    path: ./config/plugins/jwtClient/jwtClient.so
+    config:
+      jwksURL: "https://www.googleapis.com/oauth2/v3/certs"
+  filterArray:
+    path: ./config/plugins/filterArray/filterArray.so
+    config:
+      nothing: here
+  contextRenamer:
+    path: ./config/plugins/contextRenamer/contextRenamer.so
+    config:
+      nothing: here
+  contextUnpacker:
+    path: ./config/plugins/contextUnpacker/contextUnpacker.so
+    config:
+      nothing: here

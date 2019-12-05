@@ -10,14 +10,13 @@ import "github.com/fatih/color"
 
 func New(config map[string]interface{}) func(context map[string]interface{}) map[string]interface{} {
   return func(context map[string]interface{}) map[string]interface{} {
-    color.Red("[PKG] errorHandler")
     // if there is an error
     if context["error"] !=nil{
        // report it as json string to user
        context["resBody"] = "{\"err\": \""+context["error"].(string) + "\"}"
        context["resStatus"] = 500
        // log it
-       color.Yellow("[ERR] " + context["error"].(string))
+       color.Blue("[ERR] " + context["error"].(string))
     }
     // otherwise don't modify anything
 

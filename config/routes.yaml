@@ -19,3 +19,10 @@ routes:
     plugins:
       - httpSource
       - rawRender
+  mongo:
+    config:
+      something: else
+    plugins:
+      - mongoSource
+      - jsonRender
+      - errorHandler

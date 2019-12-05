@@ -10,7 +10,6 @@ import "strings"
 
 func New(config map[string]interface{}) func(context map[string]interface{}) map[string]interface{} {
   return func(context map[string]interface{}) map[string]interface{} {
-    color.Red("[PKG] contextRenamer")
     s := strings.Split(context["renameFrom"].(string), ",")
     t := strings.Split(context["renameTo"].(string), ",")
     if (len(s)!=len(t)){

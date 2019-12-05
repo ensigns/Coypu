@@ -21,7 +21,6 @@ func stringInSlice(a string, list []string) bool {
 
 func New(config map[string]interface{}) func(context map[string]interface{}) map[string]interface{} {
   return func(context map[string]interface{}) map[string]interface{} {
-    color.Red("[PKG] filterArray")
     var filtered []map[string]interface{}
     filterMatchList := strings.Split(context["filterMatchList"].(string), ",")
     filterFromList := context[context["filterFrom"].(string)].([]map[string]interface{})
