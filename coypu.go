@@ -1,7 +1,7 @@
 package main
 
 import (
-  "github.com/fatih/color"
+   "github.com/fatih/color"
    "plugin"
    "gopkg.in/yaml.v2"
    "io/ioutil"

@@ -1,3 +1,8 @@
+// Simple HTML Rendering
+// Context Interaction
+// - renderFrom -- what field (string) to write to resBody
+// - resBody -- this plugin writes resBody
+
 package main
 
 import "github.com/fatih/color"

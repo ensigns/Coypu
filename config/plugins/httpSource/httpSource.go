@@ -1,3 +1,12 @@
+// http interface for Coypu
+// Plugin config
+// - urlFieldName -- what context field to use for url fiels
+// Context Interaction
+// - (as set by config urlFieldName above) -- which url to use
+// - httpStatus -- 200 if ok, 500 if error. (todo -- use source heder info)
+// - httpRes -- response or error text
+
+
 package main
 
 import "github.com/fatih/color"

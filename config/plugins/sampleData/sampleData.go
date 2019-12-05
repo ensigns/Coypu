@@ -1,3 +1,8 @@
+// Adds random numbers to context
+// Context Interaction
+// - random -- a random integer
+// - randomFloat -- a random float
+
 package main
 
 import "github.com/fatih/color"

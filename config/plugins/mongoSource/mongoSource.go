@@ -1,11 +1,26 @@
+// SQLITE interface for Coypu
+// UNTESTED -- Hopefully not for long
+// Plugin config
+// - mongoUri -- what mongo instance to open
+// Context Interaction
+// - mongoAllowWrite -- if this route should be able to write
+// - mongoDb -- which db to use
+// - mongoCollection -- which collection to use
+// - mongoInsertBody -- data to insert into mongo
+// - mongoStatus -- 500 if error, 200 if ok
+// - mongoRes -- some indication of the result/error, or results
+
+
 package main
 
-import "github.com/fatih/color"
-import "go.mongodb.org/mongo-driver/bson"
-import "go.mongodb.org/mongo-driver/mongo"
-import "go.mongodb.org/mongo-driver/mongo/options"
-import "time"
-import "context"
+import (
+   "github.com/fatih/color"
+   "go.mongodb.org/mongo-driver/bson"
+   "go.mongodb.org/mongo-driver/mongo"
+   "go.mongodb.org/mongo-driver/mongo/options"
+   "time"
+   "context"
+)
 
 func New(config map[string]interface{}) func(coypuContext map[string]interface{}) map[string]interface{} {
   MongoClient, Err := mongo.NewClient(options.Client().ApplyURI(config["mongoUri"].(string)))
@@ -26,9 +41,9 @@ func New(config map[string]interface{}) func(coypuContext map[string]interface{}
     } else {
       collection := MongoClient.Database(coypuContext["mongoDb"].(string)).Collection(coypuContext["mongoCollection"].(string))
       // TODO are we allowed to write and Is this a post?
-      if 1==2 {
-        // TODO assemble body
-        res, err := collection.InsertOne(mongoCtx, bson.M{"name": "pi", "value": 3.14159})
+      if (coypuContext["method"]=="POST" && coypuContext["mongoAllowWrite"] !=nil){
+        mongoBody := coypuContext["mongoInsertBody"].(map[string]interface{});
+        res, err := collection.InsertOne(mongoCtx, &mongoBody)
         if err != nil{
           coypuContext["mongoStatus"] = 500
           coypuContext["mongoRes"] = string(err.Error())
