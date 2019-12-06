@@ -1,2 +1,2 @@
-#!/usr/bin/env bash
-find . -maxdepth 1 -type d \( ! -name . \) -exec bash -c "cd '{}' &&   go build -buildmode=plugin" \;
+#!/usr/bin/env sh
+find . -maxdepth 1 -type d \( ! -name . \) -exec sh -c "cd '{}' &&   go build -buildmode=plugin" \;
