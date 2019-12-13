@@ -7,7 +7,7 @@ before_install:
   - ./get_deps.sh
 
 install:
-  - cd config/plugins/ && ./build.sh
+  - cd config/plugins/ && ./build.sh && cd ../../
 
 script:
   - go build
